@@ -296,8 +296,8 @@ export const searchAPI = {
 // ============================================================================
 
 export const recommendationAPI = {
-  getRecommendations: async (userId: number, limit?: number) => {
-    const response = await api.get(`/recommendations/${userId}`, { params: { limit } });
+  getRecommendations: async (userId: number, limit?: number, query?: string) => {
+    const response = await api.get('/recommendations', { params: { limit, query } });
     return response.data;
   },
 
@@ -345,7 +345,7 @@ export const googleBooksAPI = {
       title: item.volumeInfo?.title || 'Unknown Title',
       author: item.volumeInfo?.authors?.join(', ') || 'Unknown Author',
       isbn: item.volumeInfo?.industryIdentifiers?.find((id: any) => id.type === 'ISBN_13')?.identifier ||
-            item.volumeInfo?.industryIdentifiers?.find((id: any) => id.type === 'ISBN_10')?.identifier || '',
+        item.volumeInfo?.industryIdentifiers?.find((id: any) => id.type === 'ISBN_10')?.identifier || '',
       description: item.volumeInfo?.description || '',
       coverImage: item.volumeInfo?.imageLinks?.thumbnail || '',
       publishedYear: parseInt(item.volumeInfo?.publishedDate?.substring(0, 4)) || 2020,
@@ -401,9 +401,9 @@ export const createBook = bookAPI.create;
 export const deleteBook = async (id: string | number) => bookAPI.delete(id);
 export const updateBook = async (id: string | number, data: any) => bookAPI.update(id, data);
 
-export const getRecommendations = async () => {
-  const response = await recommendationAPI.getDefaultRecommendations();
-  return response.recommendations || [];
+export const getRecommendations = async (userId: number = 1, limit?: number, query?: string) => {
+  const response = await recommendationAPI.getRecommendations(userId, limit, query);
+  return response;
 };
 
 export const getReadingLists = async () => readingListAPI.getAll();

@@ -28,7 +28,10 @@ export interface ReadingList {
   userId: string;
   name: string;
   description: string;
-  bookIds: string[];
+  bookIds?: string[];
+  books?: Book[];
+  bookCount?: number;
+  isPublic?: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -352,6 +352,42 @@ def get_recommendations(user_id, top_n=5):
         return []
 
 
+def get_content_recommendations(query, top_n=5):
+    """Recommend books based on text query using TF-IDF"""
+    try:
+        books = Book.query.all()
+        if not books:
+            return []
+
+        book_data = []
+        for book in books:
+            features = f"{book.title} {book.author} {book.category} {book.description or ''}"
+            book_data.append({'id': book.id, 'features': features, 'book': book})
+
+        # Add the query to the corpus to calculate similarity
+        corpus = [bd['features'] for bd in book_data]
+        corpus.append(query)
+
+        vectorizer = TfidfVectorizer(stop_words='english', max_features=1000)
+        tfidf_matrix = vectorizer.fit_transform(corpus)
+        
+        # Calculate cosine similarity between the query (last item) and all books
+        query_vec = tfidf_matrix[-1]
+        book_vecs = tfidf_matrix[:-1]
+        
+        cosine_sim = cosine_similarity(query_vec, book_vecs).flatten()
+        
+        # Get top indices
+        sim_scores = sorted(enumerate(cosine_sim), key=lambda x: x[1], reverse=True)
+        top_indices = [i for i, _ in sim_scores[:top_n]]
+        
+        recommendations = [book_data[i]['book'].to_dict() for i in top_indices]
+        return recommendations
+    except Exception as e:
+        print(f"Content recommendation error: {e}")
+        return []
+
+
 # ============================================================================
 # AUTH API ROUTES
 # ============================================================================
@@ -391,13 +427,35 @@ def login():
 
 
 # ============================================================================
-# USER API ROUTES
+# RECOMMENDATIONS API
 # ============================================================================
 
-@app.route('/api/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([user.to_dict() for user in users])
+@app.route('/api/recommendations/<int:user_id>', methods=['GET'])
+def recommendations(user_id):
+    top_n = request.args.get('limit', 5, type=int)
+    recs = get_recommendations(user_id, top_n)
+    return jsonify({
+        'user_id': user_id,
+        'limit': top_n,
+        'recommendations': recs
+    })
+
+
+@app.route('/api/recommendations', methods=['GET'])
+def recommendations_default():
+    query = request.args.get('query')
+    top_n = request.args.get('limit', 5, type=int)
+    
+    if query:
+        recs = get_content_recommendations(query, top_n)
+    else:
+        recs = get_recommendations(1, top_n)
+        
+    return jsonify({
+        'user_id': 1,
+        'query': query,
+        'recommendations': recs
+    })
 
 
 @app.route('/api/users/<int:user_id>', methods=['GET'])
@@ -997,28 +1055,6 @@ def export_reading_list(list_id):
     return jsonify(reading_list.to_dict())
 
 
-# ============================================================================
-# RECOMMENDATIONS API
-# ============================================================================
-
-@app.route('/api/recommendations/<int:user_id>', methods=['GET'])
-def recommendations(user_id):
-    top_n = request.args.get('limit', 5, type=int)
-    recs = get_recommendations(user_id, top_n)
-    return jsonify({
-        'user_id': user_id,
-        'limit': top_n,
-        'recommendations': recs
-    })
-
-
-@app.route('/api/recommendations', methods=['GET'])
-def recommendations_default():
-    recs = get_recommendations(1, 5)
-    return jsonify({
-        'user_id': 1,
-        'recommendations': recs
-    })
 
 
 # ============================================================================

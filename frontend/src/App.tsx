@@ -9,6 +9,7 @@ import { Admin } from './pages/Admin';
 import { Recommendations } from './pages/Recommendations';
 import { ReadingLists } from './pages/ReadingLists';
 import { BookDetail } from './pages/BookDetail';
+import { ReadingListDetail } from './pages/ReadingListDetail';
 import { Login } from './pages/Login';
 import { Signup } from './pages/Signup';
 import { NotFound } from './pages/NotFound';
@@ -214,6 +215,7 @@ function AppContent() {
           <Route path="/books/:id" element={<BookDetail />} />
           <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/reading-lists" element={<ReadingLists />} />
+          <Route path="/reading-lists/:id" element={<ReadingListDetail />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
