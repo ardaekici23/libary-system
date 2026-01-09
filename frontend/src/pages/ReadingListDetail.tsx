@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/common/Button';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 import { readingListAPI } from '@/services/api';
-import { ReadingList, Book } from '@/types';
+import { ReadingList } from '@/types';
 import { handleApiError, showSuccess } from '@/utils/errorHandling';
 
 export function ReadingListDetail() {

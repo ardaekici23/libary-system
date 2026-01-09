@@ -296,7 +296,7 @@ export const searchAPI = {
 // ============================================================================
 
 export const recommendationAPI = {
-  getRecommendations: async (userId: number, limit?: number, query?: string) => {
+  getRecommendations: async (_userId: number, limit?: number, query?: string) => {
     const response = await api.get('/recommendations', { params: { limit, query } });
     return response.data;
   },
