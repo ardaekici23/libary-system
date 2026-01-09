@@ -71,115 +71,148 @@ export function Signup() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 animated-bg">
-      <div className="max-w-md w-full">
-        <div className="text-center mb-8">
-          <div className="inline-block mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30 mx-auto">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
-                />
-              </svg>
-            </div>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-3">
-            <span className="gradient-text">Create Account</span>
-          </h1>
-          <p className="text-slate-600 text-lg">Join us to discover your next favorite book</p>
+    <div className="flex min-h-screen bg-white">
+      {/* Left Side - Visual */}
+      <div className="hidden lg:flex w-1/2 relative bg-slate-900 text-white overflow-hidden">
+        <div className="absolute inset-0">
+          <img
+            src="/auth-bg.png"
+            alt="Library Background"
+            className="w-full h-full object-cover opacity-60"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
         </div>
 
-        <div className="glass-effect rounded-3xl shadow-2xl border border-white/20 p-8">
-          <form onSubmit={handleSubmit}>
-            <Input
-              label="Full Name"
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              error={errors.name}
-              required
-              placeholder="John Doe"
-            />
+        <div className="relative z-10 w-full flex flex-col justify-between p-12">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
+              <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <span className="text-2xl font-bold tracking-tight">LibrarySystem</span>
+          </div>
 
-            <Input
-              label="Email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={errors.email}
-              required
-              placeholder="you@example.com"
-            />
+          <div className="max-w-md">
+            <blockquote className="text-2xl font-medium leading-relaxed mb-6">
+              "I have always imagined that Paradise will be a kind of library."
+            </blockquote>
+            <div className="flex items-center space-x-3">
+              <div className="h-px w-8 bg-violet-500"></div>
+              <p className="text-slate-300 font-medium">Jorge Luis Borges</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={errors.password}
-              required
-              placeholder="••••••••"
-            />
+      {/* Right Side - Form */}
+      <div className="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-20 xl:px-24 bg-white lg:bg-slate-50">
+        <div className="mx-auto w-full max-w-sm lg:w-96">
+          <div className="text-center lg:text-left">
+            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+              Create an account
+            </h2>
+            <p className="mt-2 text-sm text-slate-600">
+              Start your reading journey today.
+            </p>
+          </div>
 
-            <Input
-              label="Confirm Password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              error={errors.confirmPassword}
-              required
-              placeholder="••••••••"
-            />
-
-            <div className="mb-6">
-              <label className="flex items-start cursor-pointer group">
-                <input
-                  type="checkbox"
-                  className="mt-1 mr-2 w-4 h-4 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+          <div className="mt-8">
+            <div className="mt-6">
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <Input
+                  label="Full Name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  error={errors.name}
                   required
+                  placeholder="John Doe"
+                  className="bg-white"
                 />
-                <span className="text-sm text-slate-600 group-hover:text-slate-900">
-                  I agree to the{' '}
-                  <Link to="/terms" className="text-violet-600 hover:text-violet-700 font-semibold">
-                    Terms of Service
-                  </Link>{' '}
-                  and{' '}
-                  <Link
-                    to="/privacy"
-                    className="text-violet-600 hover:text-violet-700 font-semibold"
+
+                <Input
+                  label="Email address"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  error={errors.email}
+                  required
+                  placeholder="name@company.com"
+                  className="bg-white"
+                />
+
+                <Input
+                  label="Password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  error={errors.password}
+                  required
+                  placeholder="••••••••"
+                  className="bg-white"
+                />
+
+                <Input
+                  label="Confirm Password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  error={errors.confirmPassword}
+                  required
+                  placeholder="••••••••"
+                  className="bg-white"
+                />
+
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="terms"
+                      name="terms"
+                      type="checkbox"
+                      className="h-4 w-4 text-violet-600 focus:ring-violet-500 border-gray-300 rounded cursor-pointer"
+                      required
+                    />
+                  </div>
+                  <div className="ml-2 text-sm">
+                    <label htmlFor="terms" className="font-medium text-slate-700">
+                      I agree to the <Link to="/terms" className="text-violet-600 hover:text-violet-500">Terms of Service</Link> and <Link to="/privacy" className="text-violet-600 hover:text-violet-500">Privacy Policy</Link>
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="lg"
+                    className="w-full flex justify-center shadow-lg shadow-violet-500/30 hover:shadow-violet-500/40 transition-all duration-200"
+                    disabled={isLoading}
                   >
-                    Privacy Policy
-                  </Link>
-                </span>
-              </label>
+                    {isLoading ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Creating account...
+                      </>
+                    ) : (
+                      'Create Account'
+                    )}
+                  </Button>
+                </div>
+              </form>
             </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              className="w-full"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Creating account...' : 'Sign Up'}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-slate-600">
-              Already have an account?{' '}
-              <Link to="/login" className="text-violet-600 hover:text-violet-700 font-semibold">
-                Sign in
-              </Link>
-            </p>
+            <div className="mt-8 pt-6 border-t border-slate-200">
+              <p className="text-center text-sm text-slate-600">
+                Already have an account?{' '}
+                <Link to="/login" className="font-bold text-violet-600 hover:text-violet-500 transition-colors">
+                  Sign in here
+                </Link>
+              </p>
+            </div>
           </div>
         </div>
       </div>
